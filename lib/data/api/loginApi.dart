@@ -3,21 +3,19 @@ import 'dart:convert';
 import 'package:chamcongapp/configs/config.dart';
 import 'package:http/http.dart';
 
-Future<int> postLogin({String name, String username, String password}) async {
+Future<int> postLogin({String username, String password}) async {
   try {
-    Map<String, dynamic> body = {
-      "name": name,
-      "username": username,
-      "password": password
-    };
+    Map<String, String> body = {"username": username, "password": password};
     var finalBody = json.encode(body);
     Response response = await post(
-        ConfigsApp.isDebugMode ? ConfigsApp.baseUrl : ConfigsApp.baseUrl,
+        ConfigsApp.isDebugMode
+            ? ConfigsApp.baseUrl + ConfigsApp.loginUrl
+            : ConfigsApp.baseUrl + ConfigsApp.loginUrl,
         body: finalBody,
         headers: {'Content-Type': 'application/json'});
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-      if (data['message'] == "add success") {
+      if (data['message'] == "Login Success") {
         return 1;
       } else {
         return 0;

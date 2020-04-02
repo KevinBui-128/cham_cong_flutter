@@ -1,10 +1,10 @@
 class Validations{
   static bool isValidText(String text) {
-    return text != null && text.length > 0;
+    return text != null && text.length > 3;
   }
 
   static bool isValidUser(String user) {
-    return user != null && user.length > 0;
+    return user != null && user.length > 3;
   }
 
   static bool isValidPass(String pass) {

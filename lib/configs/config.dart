@@ -1,4 +1,6 @@
 class ConfigsApp {
   static bool isDebugMode = false;
-  static String baseUrl = "http://127.0.0.1:34718/employees";
+  static String baseUrl = "http://35.232.245.39:8080";
+  static String loginUrl = "/login";
+  static String registerUrl = "/employees";
 }
