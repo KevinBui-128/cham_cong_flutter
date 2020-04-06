@@ -12,51 +12,37 @@ class RegisterStream {
 
   void userNameChange(String username) {
     if (!Validations.isValidUser(username)) {
-      _usernameController.sink.addError("Tài khoản phải nhập từ 3 ký tự trở lên");
+      _usernameController.sink
+          .addError("Tài khoản phải nhập từ 3 ký tự trở lên");
     }
-    if (Validations.isValidUser(username)) {
-      _usernameController.sink.add("OK");
-    }
+    else{}
   }
 
   void passWordChange(String pass) {
     if (!Validations.isValidPass(pass)) {
       _passController.sink.addError("Mật khẩu phải có từ 4-8 ký tự");
     }
-    if (Validations.isValidPass(pass)) {
-      _passController.sink.add("Ok");
-    }
+    else{}
   }
 
   void nameChange(String name) {
     if (!Validations.isValidText(name)) {
       _nameController.sink.addError("Tên phải nhập từ 3 ký tự trở lên");
     }
-    if (Validations.isValidText(name)) {
-      _nameController.sink.add("Ok");
-    }
+    else{}
   }
 
   bool isValidInfo({String username, String password, String name}) {
     bool status = true;
     if (!Validations.isValidUser(username)) {
-      // _usernameController.sink.addError("Tài khoản sai quy định");
       status = false;
-    } else {
-      // _usernameController.sink.add("Thành công");
-    }
+    } else {}
     if (!Validations.isValidPass(password)) {
-      // _passController.sink.addError("Mật khẩu sai quy định ");
       status = false;
-    } else {
-      // _passController.sink.add("Thành công");
-    }
+    } else {}
     if (!Validations.isValidUser(name)) {
-      // _nameController.sink.addError("Họ và tên sai quy định");
       status = false;
-    } else {
-      // _nameController.sink.add("Thành công");
-    }
+    } else {}
     return status;
   }
 

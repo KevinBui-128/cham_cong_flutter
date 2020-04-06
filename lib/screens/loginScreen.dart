@@ -1,7 +1,4 @@
-import 'dart:js';
-
 import 'package:chamcongapp/blocs/login_bloc/login_bloc.dart';
-import 'package:chamcongapp/screens/homeScreen.dart';
 import 'package:chamcongapp/screens/registerScreen.dart';
 import 'package:chamcongapp/streams/loginStream.dart';
 import 'package:flutter/material.dart';
@@ -47,8 +44,12 @@ class _LoginPageState extends State<LoginPage> {
         child: BlocProvider(
           builder: (context) => LoginBloc(),
           child: BlocListener<LoginBloc, LoginState>(
-            listener: (context, state) {},
-            child: BlocBuilder(
+            listener: (context, state) {
+              if (state is LoginFailureState) {
+                _diaLog(state.errorTitle, state.errorMessage);
+              }
+            },
+            child: BlocBuilder<LoginBloc, LoginState>(
               builder: (context, state) {
                 return Container(
                   padding: EdgeInsets.fromLTRB(30, 100, 30, 10),
@@ -73,22 +74,22 @@ class _LoginPageState extends State<LoginPage> {
                         child: StreamBuilder(
                           stream: loginStream.usernameStream,
                           builder: (context, snapshot) => TextField(
-                          focusNode: _userName,
-                          onSubmitted: (va) {
-                            _fieldFocusChange(context, _userName, _passWord);
-                          },
-                          controller: _user,
-                          onChanged: (va) {
-                            loginStream.usernameChange(va);
-                          },
-                          style: TextStyle(fontSize: 18, color: Colors.black),
-                          decoration: InputDecoration(
-                              labelText: 'Tài khoản',
-                              errorText:
-                                  snapshot.hasError ? snapshot.error : null,
-                              labelStyle: TextStyle(
-                                  color: Color(0xffd888888), fontSize: 15)),
-                        ),
+                            focusNode: _userName,
+                            onSubmitted: (va) {
+                              _fieldFocusChange(context, _userName, _passWord);
+                            },
+                            controller: _user,
+                            onChanged: (va) {
+                              loginStream.usernameChange(va);
+                            },
+                            style: TextStyle(fontSize: 18, color: Colors.black),
+                            decoration: InputDecoration(
+                                labelText: 'Tài khoản',
+                                errorText:
+                                    snapshot.hasError ? snapshot.error : null,
+                                labelStyle: TextStyle(
+                                    color: Color(0xffd888888), fontSize: 15)),
+                          ),
                         ),
                       ),
                       Container(
@@ -96,20 +97,20 @@ class _LoginPageState extends State<LoginPage> {
                         child: StreamBuilder(
                           stream: loginStream.passwordStream,
                           builder: (context, snapshot) => TextField(
-                          focusNode: _passWord,
-                          controller: _pass,
-                          onChanged: (va) {
-                            loginStream.passwordChange(va);
-                          },
-                          obscureText: true,
-                          style: TextStyle(fontSize: 18, color: Colors.black),
-                          decoration: InputDecoration(
-                              labelText: 'Mật khẩu',
-                              errorText:
-                                  snapshot.hasError ? snapshot.error : null,
-                              labelStyle: TextStyle(
-                                  color: Color(0xffd888888), fontSize: 15)),
-                        ),
+                            focusNode: _passWord,
+                            controller: _pass,
+                            onChanged: (va) {
+                              loginStream.passwordChange(va);
+                            },
+                            obscureText: true,
+                            style: TextStyle(fontSize: 18, color: Colors.black),
+                            decoration: InputDecoration(
+                                labelText: 'Mật khẩu',
+                                errorText:
+                                    snapshot.hasError ? snapshot.error : null,
+                                labelStyle: TextStyle(
+                                    color: Color(0xffd888888), fontSize: 15)),
+                          ),
                         ),
                       ),
                       Padding(
@@ -120,12 +121,12 @@ class _LoginPageState extends State<LoginPage> {
                           child: RaisedButton(
                             onPressed: () {
                               BlocProvider.of<LoginBloc>(context).add(
-                              OnPressButtonEvent(
-                                  context: context,
-                                  username: _user.text,
-                                  password: _pass.text,
-                                  loginStream: loginStream),
-                            );
+                                OnPressButtonEvent(
+                                    context: context,
+                                    username: _user.text,
+                                    password: _pass.text,
+                                    loginStream: loginStream),
+                              );
                             },
                             color: Colors.blueAccent,
                             shape: RoundedRectangleBorder(
@@ -173,6 +174,19 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _diaLog(String title, String message) {
+    return AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Ok'),
+          onPressed: () {},
+        )
+      ],
     );
   }
 }

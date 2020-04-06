@@ -30,6 +30,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             yield LoginSuccessState();
             Navigator.push(event.context,
                 MaterialPageRoute(builder: (context) => HomePage()));
+          } else if (result == 2) {
+            print("Tài khoản không tồn tại");
+            yield LoginFailureState(
+                errorTitle: "Thông báo",
+                errorMessage: "Tài khoản không tồn tại");
           } else {
             yield LoginFailureState(
                 errorTitle: "Thông báo lỗi",

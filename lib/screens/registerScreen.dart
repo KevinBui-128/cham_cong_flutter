@@ -48,7 +48,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: BlocListener<RegisterBloc, RegisterState>(
             listener: (context, state) {
               if (state is FailureState) {
-                diaLog(state.errorTitle, state.errorMessage);
+                _diaLog(state.errorTitle, state.errorMessage);
               }
             },
             child: BlocBuilder<RegisterBloc, RegisterState>(
@@ -172,10 +172,16 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget diaLog(String title, String message) {
-    return CupertinoAlertDialog(
+  Widget _diaLog(String title, String message) {
+    return AlertDialog(
       title: Text(title),
       content: Text(message),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Ok'),
+          onPressed: () {},
+        )
+      ],
     );
   }
 }

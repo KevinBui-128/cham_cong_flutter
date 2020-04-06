@@ -1,3 +1,4 @@
+import 'package:chamcongapp/screens/homeScreen.dart';
 import 'package:chamcongapp/screens/loginScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LoginPage(),
+      home: HomePage(),
     );
   }
 }
