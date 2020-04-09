@@ -2,22 +2,20 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:chamcongapp/data/api/registerApi.dart';
-import 'package:chamcongapp/screens/loginScreen.dart';
 import 'package:chamcongapp/streams/registerStream.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
-part 'register_event.dart';
-part 'register_state.dart';
+part 'add_employees_event.dart';
+part 'add_employees_state.dart';
 
-class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
+class AddEmployeesBloc extends Bloc<AddEmployeesEvent, AddEmployeesState> {
   @override
-  RegisterState get initialState => RegisterInitial();
+  AddEmployeesState get initialState => AddEmployeesInitial();
 
   @override
-  Stream<RegisterState> mapEventToState(
-    RegisterEvent event,
+  Stream<AddEmployeesState> mapEventToState(
+    AddEmployeesEvent event,
   ) async* {
     try {
       if (event is OnPressButtonEvent) {
@@ -31,8 +29,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
               username: event.username.trim(),
               password: event.password.trim());
           if (result == 1) {
-            Navigator.push(event.context,
-                MaterialPageRoute(builder: (context) => LoginPage()));
+            Navigator.pop(event.context);
             yield SuccessState();
           } else if (result == 2) {
             yield FailureState(

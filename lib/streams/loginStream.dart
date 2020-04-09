@@ -12,12 +12,15 @@ class LoginStream {
     if (!Validations.isValidUser(username)) {
       _userController.sink.addError("Tài khoản phải nhập từ 3 ký tự trở lên");
     } else {
+      _userController.sink.add("ok");
     }
   }
-  void passwordChange(String password){
+
+  void passwordChange(String password) {
     if (!Validations.isValidPass(password)) {
       _passController.sink.addError("Mật khẩu phải có từ 4-8 ký tự");
     } else {
+      _passController.sink.add("ok");
     }
   }
 

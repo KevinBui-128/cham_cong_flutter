@@ -1,8 +1,9 @@
 import 'dart:convert';
+
 import 'package:chamcongapp/configs/config.dart';
 import 'package:http/http.dart';
 
-Future<int> postRegister(
+Future<int> postUpdateEmployees(
     {String name, String username, String password}) async {
   try {
     Map<String, dynamic> body = {
@@ -13,23 +14,25 @@ Future<int> postRegister(
     var finalBody = json.encode(body);
     Response response = await post(
         ConfigsApp.isDebugMode
-            ? ConfigsApp.baseUrl + ConfigsApp.employeesUrl + ConfigsApp.addUrl
-            : ConfigsApp.baseUrl + ConfigsApp.employeesUrl + ConfigsApp.addUrl,
+            ? ConfigsApp.baseUrl +
+                ConfigsApp.employeesUrl +
+                ConfigsApp.updateUrl
+            : ConfigsApp.baseUrl +
+                ConfigsApp.employeesUrl +
+                ConfigsApp.updateUrl,
         body: finalBody,
-        headers: {
-          "Content-Type": "application/json",
-        });
+        headers: {'Content-Type': 'application/json'});
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-      if (data['message'] == "Add success") {
+      if (data['message' == "update success"]) {
         return 1;
-      } else if (data['message'] == "Username exists") {
+      } else if (data['message'] == "Wrong username" ||
+          data['message'] == "update fail") {
         return 2;
       } else {
         return 0;
       }
     } else {
-      print("lỗi đăng ký do api");
       return 0;
     }
   } catch (e) {

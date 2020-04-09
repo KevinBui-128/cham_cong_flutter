@@ -14,22 +14,25 @@ class RegisterStream {
     if (!Validations.isValidUser(username)) {
       _usernameController.sink
           .addError("Tài khoản phải nhập từ 3 ký tự trở lên");
+    } else {
+      _usernameController.sink.add("ok");
     }
-    else{}
   }
 
   void passWordChange(String pass) {
     if (!Validations.isValidPass(pass)) {
       _passController.sink.addError("Mật khẩu phải có từ 4-8 ký tự");
+    } else {
+      _passController.sink.add("ok");
     }
-    else{}
   }
 
   void nameChange(String name) {
     if (!Validations.isValidText(name)) {
       _nameController.sink.addError("Tên phải nhập từ 3 ký tự trở lên");
+    } else {
+      _nameController.sink.add("ok");
     }
-    else{}
   }
 
   bool isValidInfo({String username, String password, String name}) {

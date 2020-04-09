@@ -3,5 +3,13 @@ class ConfigsApp {
   static String baseUrl = "http://35.232.245.39:8080";
   static String loginUrl = "/login";
   static String employeesUrl = "/employees";
-  static String abcUrl = "http://35.232.245.39:8080/login";
+  static String addUrl = "/add";
+  static String updateUrl = "/update";
+  static String delUrl = "/delete";
+  
+  static String usernameLogin = "";
+  static String passwordLogin = "";
+
+  static String userName = "";
+
 }

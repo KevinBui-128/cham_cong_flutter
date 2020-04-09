@@ -1,6 +1,7 @@
-import 'package:chamcongapp/screens/calendarScreen.dart';
-import 'package:chamcongapp/screens/checkinScreen.dart';
-import 'package:chamcongapp/screens/employeesScreen.dart';
+
+import 'package:chamcongapp/screens/calendar/calendarScreen.dart';
+import 'package:chamcongapp/screens/checkin/checkinScreen.dart';
+import 'package:chamcongapp/screens/empoyees/employeesScreen.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

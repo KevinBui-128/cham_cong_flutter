@@ -63,7 +63,7 @@ class _CalendarPageState extends State<CalendarPage> {
             Card(
               child: TableCalendar(
                 events: _events,
-                initialCalendarFormat: CalendarFormat.week,
+                initialCalendarFormat: CalendarFormat.month,
                 calendarStyle: CalendarStyle(
                   canEventMarkersOverflow: true,
                   todayColor: Colors.orange,

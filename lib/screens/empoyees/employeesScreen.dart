@@ -1,5 +1,6 @@
 import 'package:chamcongapp/blocs/employees_bloc/employees_bloc.dart';
 import 'package:chamcongapp/data/model/employeesModel.dart';
+import 'package:chamcongapp/screens/empoyees/addEmployeesScreen.dart';
 import 'package:chamcongapp/screens/empoyees/infoEmployeeScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class EmployeesPage extends StatefulWidget {
 }
 
 class _EmployeesPageState extends State<EmployeesPage> {
-  // List<Employee> employeesList;
+  // final Employees employees;
 
   final _employeeBloc = EmployeesBloc();
   @override
@@ -23,14 +24,25 @@ class _EmployeesPageState extends State<EmployeesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AddEmployeesPage()));
+        },
+        child: Icon(Icons.add),
+      ),
       body: BlocProvider(
         builder: (BuildContext context) =>
             _employeeBloc..add(LoadEmployeesEvent()),
         child: BlocListener<EmployeesBloc, EmployeesState>(
           listener: (context, state) {
             if (state is ErrorState) {
-              _diaLog(state.errorTitle, state.errorMessage);
-            }
+              _showDialog(context, state.errorTitle, state.errorMessage);
+            } 
+            // else if (state is DelSuccessState) {
+            //   // _showDialog(state.title, state.message);
+            //   BlocProvider.of<EmployeesBloc>(context).add(LoadEmployeesEvent());
+            // }
           },
           child: BlocBuilder<EmployeesBloc, EmployeesState>(
             builder: (BuildContext context, EmployeesState state) {
@@ -60,8 +72,9 @@ class _EmployeesPageState extends State<EmployeesPage> {
     );
   }
 
-  Widget _buildList(BuildContext context, List<Employee> employeeList) {
+  Widget _buildList(BuildContext mainContext, List<Employee> employeeList) {
     List<Employee> employeesList = employeeList;
+
     return employeesList.length == 0
         ? Center(
             child: Text("</ Danh sách rỗng />"),
@@ -70,30 +83,46 @@ class _EmployeesPageState extends State<EmployeesPage> {
             itemCount: employeesList?.length ?? 0,
             itemBuilder: (context, index) {
               return Card(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  padding: EdgeInsets.all(10),
-                  child: ListTile(
-                    leading: Icon(Icons.person_pin_circle,size: 50,),
-                    title: Text(
-                        employeesList[index]?.username ?? "username not found"),
-                    subtitle:
-                        Text(employeesList[index]?.name ?? "name not found"),
-                    trailing: Icon(Icons.edit),
-                    onTap: (){Navigator.push(context,
-                MaterialPageRoute(builder: (context) => InfoEmployeePage()));},
+                  child: Container(
+                width: MediaQuery.of(mainContext).size.width,
+                height: MediaQuery.of(mainContext).size.height * 0.15,
+                padding: EdgeInsets.all(10),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.person,
+                    size: 30,
                   ),
+                  title: Text(
+                        employeesList[index]?.username ?? "username not found"),
+                  subtitle:
+                      Text(employeesList[index]?.name ?? "name not found"),
+            
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => InfoEmployeePage(employee: employeesList[index],)));
+                  },
                 ),
-              );
+              ));
             },
           );
   }
 
-  Widget _diaLog(String title, String message) {
-    return CupertinoAlertDialog(
-      title: Text(title),
-      content: Text(message),
+  _showDialog(BuildContext mainContext, String title, String message) async {
+    await showDialog(
+      context: mainContext,
+      builder: (context) => AlertDialog(
+        title: Text("Bạn thực sự muốn xóa?"),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("Ok"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+        ],
+      ),
     );
   }
 }

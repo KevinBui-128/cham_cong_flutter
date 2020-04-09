@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:chamcongapp/configs/config.dart';
 import 'package:chamcongapp/data/api/loginApi.dart';
 import 'package:chamcongapp/screens/homeScreen.dart';
 import 'package:chamcongapp/streams/loginStream.dart';
@@ -28,8 +29,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               username: event.username.trim(), password: event.password.trim());
           if (result == 1) {
             yield LoginSuccessState();
-            Navigator.push(event.context,
-                MaterialPageRoute(builder: (context) => HomePage()));
+            Navigator.push(
+              event.context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(),
+              ),
+            );
+            ConfigsApp.userName = event.username.trim();
           } else if (result == 2) {
             print("Tài khoản không tồn tại");
             yield LoginFailureState(

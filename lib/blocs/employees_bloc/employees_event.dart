@@ -10,3 +10,5 @@ class EmployeesEvent extends Equatable {
 class LoadEmployeesEvent extends EmployeesEvent {}
 
 class OnReFreshEmployeesEvent extends EmployeesEvent {}
+
+

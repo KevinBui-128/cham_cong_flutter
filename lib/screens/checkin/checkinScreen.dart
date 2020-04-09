@@ -12,13 +12,15 @@ class _CheckinPageState extends State<CheckinPage> {
     return Scaffold(
       body: ListView.builder(
         shrinkWrap: true,
+        physics: const AlwaysScrollableScrollPhysics(),
         itemCount: itemList.length,
         itemBuilder: (context, index) {
           return Card(
             child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.15,
-                padding: EdgeInsets.all(10),
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.all(10),
+              child: Container(
+                height: MediaQuery.of(context).size.height / 5,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -68,10 +70,15 @@ class _CheckinPageState extends State<CheckinPage> {
                       ],
                     ),
                   ],
-                )),
+                ),
+              ),
+            ),
           );
         },
       ),
+      // (title: Text(itemList[index]),children: <Widget>[
+
+      // ],
     );
   }
 }
