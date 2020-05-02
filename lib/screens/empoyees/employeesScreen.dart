@@ -23,38 +23,42 @@ class _EmployeesPageState extends State<EmployeesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddEmployeesPage()));
+    return BlocProvider(
+      builder: (BuildContext context) =>
+          _employeeBloc..add(LoadEmployeesEvent()),
+      child: BlocListener<EmployeesBloc, EmployeesState>(
+        listener: (context, state) {
+          if (state is ErrorState) {
+            _showDialog(context, state.errorTitle, state.errorMessage);
+          } else if (state is RefreshState) {}
         },
-        child: Icon(Icons.add),
-      ),
-      body: BlocProvider(
-        builder: (BuildContext context) =>
-            _employeeBloc..add(LoadEmployeesEvent()),
-        child: BlocListener<EmployeesBloc, EmployeesState>(
-          listener: (context, state) {
-            if (state is ErrorState) {
-              _showDialog(context, state.errorTitle, state.errorMessage);
-            } 
-            // else if (state is DelSuccessState) {
-            //   // _showDialog(state.title, state.message);
-            //   BlocProvider.of<EmployeesBloc>(context).add(LoadEmployeesEvent());
-            // }
+        child: BlocBuilder<EmployeesBloc, EmployeesState>(
+          builder: (BuildContext context, EmployeesState state) {
+            if (state is LoadingState) {
+              return _loadingData(context);
+            } else if (state is LoadedState) {
+              return Scaffold(
+                  floatingActionButton: FloatingActionButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddEmployeesPage(),
+                        ),
+                      ).then(
+                        (_) => BlocProvider.of<EmployeesBloc>(context).add(
+                          LoadEmployeesEvent(),
+                        ),
+                      );
+                      
+                    },
+                    child: Icon(Icons.add),
+                  ),
+                  body: _buildList(context, state.employeesList));
+            } else {
+              return _buildEmptyBody();
+            }
           },
-          child: BlocBuilder<EmployeesBloc, EmployeesState>(
-            builder: (BuildContext context, EmployeesState state) {
-              if (state is LoadingState) {
-                return _loadingData(context);
-              } else if (state is LoadedState) {
-                return _buildList(context, state.employeesList);
-              } else {
-                return _buildEmptyBody();
-              }
-            },
-          ),
         ),
       ),
     );
@@ -72,7 +76,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
     );
   }
 
-  Widget _buildList(BuildContext mainContext, List<Employee> employeeList) {
+  Widget _buildList(BuildContext context, List<Employee> employeeList) {
     List<Employee> employeesList = employeeList;
 
     return employeesList.length == 0
@@ -84,8 +88,8 @@ class _EmployeesPageState extends State<EmployeesPage> {
             itemBuilder: (context, index) {
               return Card(
                   child: Container(
-                width: MediaQuery.of(mainContext).size.width,
-                height: MediaQuery.of(mainContext).size.height * 0.15,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.15,
                 padding: EdgeInsets.all(10),
                 child: ListTile(
                   leading: Icon(
@@ -93,15 +97,47 @@ class _EmployeesPageState extends State<EmployeesPage> {
                     size: 30,
                   ),
                   title: Text(
-                        employeesList[index]?.username ?? "username not found"),
+                      employeesList[index]?.username ?? "username not found"),
                   subtitle:
                       Text(employeesList[index]?.name ?? "name not found"),
-            
+                  // trailing: PopupMenuButton<int>(
+                  //   onSelected: (int result) {
+                  //     if (result == 1) {
+                  //       Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (context) => UpdateEmployeesPage(
+                  //                     employee: employeesList[index],
+                  //                   )));
+                  //     } else if (result == 2) {
+                  //       _showDelDialog(context, employeeList, index);
+                  //     }
+                  //   },
+                  //   itemBuilder: (BuildContext context) =>
+                  //       <PopupMenuEntry<int>>[
+                  //     const PopupMenuItem<int>(
+                  //       value: 1,
+                  //       child: Text('Sửa'),
+                  //     ),
+                  //     const PopupMenuItem<int>(
+                  //       value: 2,
+                  //       child: Text('Xóa'),
+                  //     ),
+                  //   ],
+                  // ),
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => InfoEmployeePage(employee: employeesList[index],)));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => InfoEmployeePage(
+                          employee: employeesList[index],
+                        ),
+                      ),
+                    ).then(
+                      (_) => BlocProvider.of<EmployeesBloc>(context).add(
+                        LoadEmployeesEvent(),
+                      ),
+                    );
                   },
                 ),
               ));
@@ -113,7 +149,8 @@ class _EmployeesPageState extends State<EmployeesPage> {
     await showDialog(
       context: mainContext,
       builder: (context) => AlertDialog(
-        title: Text("Bạn thực sự muốn xóa?"),
+        title: Text(title),
+        content: Text(message),
         actions: <Widget>[
           FlatButton(
             child: Text("Ok"),

@@ -14,6 +14,7 @@ class EmployeesInitial extends EmployeesState {
 
 class LoadingState extends EmployeesState {}
 
+class RefreshState extends EmployeesState{}
 class LoadedState extends EmployeesState {
   final List<Employee> employeesList;
   LoadedState({@required this.employeesList});
@@ -28,3 +29,4 @@ class ErrorState extends EmployeesState {
   @override
   List<Object> get props => [errorTitle, errorTitle];
 }
+

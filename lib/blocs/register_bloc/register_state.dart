@@ -14,7 +14,13 @@ class RegisterInitial extends RegisterState {
 
 class LoadingState extends RegisterState {}
 
-class SuccessState extends RegisterState {}
+class SuccessState extends RegisterState {
+  final String title;
+  final String message;
+  SuccessState({@required this.title, @required this.message});
+  @override
+  List<Object> get props => [title, message];
+}
 
 class FailureState extends RegisterState {
   final String errorTitle;

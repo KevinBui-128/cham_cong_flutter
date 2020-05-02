@@ -3,21 +3,21 @@ import 'dart:convert';
 import 'package:chamcongapp/configs/config.dart';
 import 'package:http/http.dart';
 
-Future<int> delEmployees(
-    {String username}) async {
+Future<int> delCheckin(
+    {String username, int checkinDate}) async {
   try {
     Map<String, dynamic> body = {
       "username": username,
-      "name": "name",
-      "password": "password",
-      "address": "address",
-      "phone": 10
+      "workTime": "checkin.workTime",
+      "checkinDate": checkinDate,
+      "checkinTime": "checkin.checkinTime",
+      "checkoutTime": "checkin.checkoutTime"
     };
     var finalBody = json.encode(body);
     Response response = await post(
       ConfigsApp.isDebugMode
-          ? ConfigsApp.baseUrl + ConfigsApp.employeesUrl + ConfigsApp.delUrl
-          : ConfigsApp.baseUrl + ConfigsApp.employeesUrl + ConfigsApp.delUrl,
+          ? ConfigsApp.baseUrl + ConfigsApp.checkinUrl + ConfigsApp.delUrl
+          : ConfigsApp.baseUrl + ConfigsApp.checkinUrl + ConfigsApp.delUrl,
       body: finalBody,
       headers: {'Content-Type': 'application/json'},
     );

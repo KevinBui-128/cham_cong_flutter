@@ -27,15 +27,12 @@ class AddEmployeesBloc extends Bloc<AddEmployeesEvent, AddEmployeesState> {
           final result = await postRegister(
               name: event.name.trim(),
               username: event.username.trim(),
-              password: event.password.trim());
+              password: event.password.trim(),);
           if (result == 1) {
-            Navigator.pop(event.context);
-            yield SuccessState();
-          } else if (result == 2) {
-            yield FailureState(
-                errorTitle: "Đăng ký thật bại",
-                errorMessage: "Tài khoản đã tồn tại");
-            print("tai khoản tồn tại");
+            yield SuccessState(
+              title: "Thông báo",
+              message: "Đăng ký thành công"
+            );
           } else {
             yield FailureState(
                 errorTitle: "Đăng ký thất bại", errorMessage: null);

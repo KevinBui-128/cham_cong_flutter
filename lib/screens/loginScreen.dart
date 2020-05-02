@@ -46,7 +46,9 @@ class _LoginPageState extends State<LoginPage> {
           child: BlocListener<LoginBloc, LoginState>(
             listener: (context, state) {
               if (state is LoginFailureState) {
-                _diaLog(state.errorTitle, state.errorMessage);
+                _showDialog(context, state.errorTitle, state.errorMessage);
+              } else if (state is LoadingState) {
+                _loadingData(context);
               }
             },
             child: BlocBuilder<LoginBloc, LoginState>(
@@ -177,16 +179,27 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _diaLog(String title, String message) {
-    return AlertDialog(
-      title: Text(title),
-      content: Text(message),
-      actions: <Widget>[
-        FlatButton(
-          child: Text('Ok'),
-          onPressed: () {},
-        )
-      ],
+  Widget _loadingData(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  _showDialog(BuildContext mainContext, String title, String message) async {
+    await showDialog(
+      context: mainContext,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("Ok"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+        ],
+      ),
     );
   }
 }

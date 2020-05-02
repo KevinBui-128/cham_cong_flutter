@@ -5,6 +5,7 @@ import 'package:chamcongapp/data/api/employeesApi.dart';
 import 'package:chamcongapp/data/model/employeesModel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 part 'employees_event.dart';
 part 'employees_state.dart';
@@ -20,7 +21,6 @@ class EmployeesBloc extends Bloc<EmployeesEvent, EmployeesState> {
     try {
       if (event is LoadEmployeesEvent) {
         yield LoadingState();
-
         EmployeesModel employeesModel = await getEmployees();
 
         if (employeesModel?.employees != null) {

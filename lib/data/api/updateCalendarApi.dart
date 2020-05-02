@@ -1,22 +1,20 @@
 import 'dart:convert';
+
 import 'package:chamcongapp/configs/config.dart';
 import 'package:http/http.dart';
 
-Future<int> postRegister(
-    {String name, String username, String password}) async {
+Future<int> postUpdateCalendar({int specialDay, int workDay, int dayOff}) async {
   try {
     Map<String, dynamic> body = {
-      "name": name,
-      "username": username,
-      "password": password,
-      "address": "Thông tin chưa cập nhật",
-      "phone": 012345678
+      "specialDay": specialDay,
+      "workDay": workDay,
+      "dayOff": dayOff
     };
     var finalBody = json.encode(body);
     Response response = await post(
         ConfigsApp.isDebugMode
-            ? ConfigsApp.baseUrl + ConfigsApp.employeesUrl + ConfigsApp.addUrl
-            : ConfigsApp.baseUrl + ConfigsApp.employeesUrl + ConfigsApp.addUrl,
+            ? ConfigsApp.baseUrl + ConfigsApp.calendarUrl + ConfigsApp.updateUrl
+            : ConfigsApp.baseUrl + ConfigsApp.calendarUrl + ConfigsApp.updateUrl,
         body: finalBody,
         headers: {
           "Content-Type": "application/json",

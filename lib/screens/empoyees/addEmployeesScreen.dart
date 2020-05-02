@@ -47,7 +47,11 @@ class _AddEmployeesPageState extends State<AddEmployeesPage> {
           child: BlocListener<AddEmployeesBloc, AddEmployeesState>(
             listener: (context, state) {
               if (state is FailureState) {
-                _diaLog(state.errorTitle, state.errorMessage);
+                _showDialog(context, state.errorTitle, state.errorMessage);
+              } else if (state is LoadingState) {
+                _loadingData(context);
+              } else if (state is SuccessState) {
+                _showDialog(context, state.title, state.message);
               }
             },
             child: BlocBuilder<AddEmployeesBloc, AddEmployeesState>(
@@ -171,16 +175,27 @@ class _AddEmployeesPageState extends State<AddEmployeesPage> {
     );
   }
 
-  Widget _diaLog(String title, String message) {
-    return AlertDialog(
-      title: Text(title),
-      content: Text(message),
-      actions: <Widget>[
-        FlatButton(
-          child: Text('Ok'),
-          onPressed: () {},
-        )
-      ],
+  Widget _loadingData(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  _showDialog(BuildContext mainContext, String title, String message) async {
+    await showDialog(
+      context: mainContext,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("Ok"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+        ],
+      ),
     );
   }
 }

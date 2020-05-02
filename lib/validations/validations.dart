@@ -11,5 +11,8 @@ class Validations{
     return pass != null && pass.length >= 4 && pass.length <= 50;
   }
 
+  static bool isValidPhone(int phone) {
+    return phone != null;
+  }
 
 }

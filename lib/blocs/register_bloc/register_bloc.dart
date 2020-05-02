@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:chamcongapp/data/api/registerApi.dart';
-import 'package:chamcongapp/screens/loginScreen.dart';
 import 'package:chamcongapp/streams/registerStream.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,17 +30,13 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
               username: event.username.trim(),
               password: event.password.trim());
           if (result == 1) {
-            Navigator.push(event.context,
-                MaterialPageRoute(builder: (context) => LoginPage()));
-            yield SuccessState();
-          } else if (result == 2) {
-            yield FailureState(
-                errorTitle: "Đăng ký thật bại",
-                errorMessage: "Tài khoản đã tồn tại");
-            print("tai khoản tồn tại");
+            yield SuccessState(
+              title: "Thông báo",
+              message: "Đăng ký thành công"
+            );
           } else {
             yield FailureState(
-                errorTitle: "Đăng ký thất bại", errorMessage: null);
+                errorTitle: "Thông báo", errorMessage: "Đăng ký thất bại");
           }
         } else {
           yield FailureState(

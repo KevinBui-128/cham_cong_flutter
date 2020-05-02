@@ -21,7 +21,7 @@ class OnPressButtonEvent extends RegisterEvent {
       @required this.context,
       this.registerStream});
   @override
-  List<Object> get props => [name, username, password];
+  List<Object> get props => [name, username, password, context, registerStream];
 }
 
 class ShowPassEvent extends RegisterEvent {

@@ -29,7 +29,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               username: event.username.trim(), password: event.password.trim());
           if (result == 1) {
             yield LoginSuccessState();
-            Navigator.push(
+            Navigator.pushReplacement(
               event.context,
               MaterialPageRoute(
                 builder: (context) => HomePage(),
@@ -41,6 +41,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             yield LoginFailureState(
                 errorTitle: "Thông báo",
                 errorMessage: "Tài khoản không tồn tại");
+          } else if (result == 3) {
+            print("Mật khẩu sai");
+            yield LoginFailureState(
+                errorTitle: "Thông báo", errorMessage: "Mật khẩu sai");
           } else {
             yield LoginFailureState(
                 errorTitle: "Thông báo lỗi",

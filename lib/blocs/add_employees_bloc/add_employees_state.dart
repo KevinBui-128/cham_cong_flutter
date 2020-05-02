@@ -14,7 +14,13 @@ class AddEmployeesInitial extends AddEmployeesState {
 
 class LoadingState extends AddEmployeesState {}
 
-class SuccessState extends AddEmployeesState {}
+class SuccessState extends AddEmployeesState {
+  final String title;
+  final String message;
+  SuccessState({@required this.title, @required this.message});
+  @override
+  List<Object> get props => [title, message];
+}
 
 class FailureState extends AddEmployeesState {
   final String errorTitle;

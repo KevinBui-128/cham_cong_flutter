@@ -3,21 +3,19 @@ import 'dart:convert';
 import 'package:chamcongapp/configs/config.dart';
 import 'package:http/http.dart';
 
-Future<int> delEmployees(
-    {String username}) async {
+Future<int> delCalendar(
+    {int specialDay, int workDay, int dayOff}) async {
   try {
     Map<String, dynamic> body = {
-      "username": username,
-      "name": "name",
-      "password": "password",
-      "address": "address",
-      "phone": 10
+      "specialDay": specialDay,
+      "workDay": workDay,
+      "dayOff": dayOff
     };
     var finalBody = json.encode(body);
     Response response = await post(
       ConfigsApp.isDebugMode
-          ? ConfigsApp.baseUrl + ConfigsApp.employeesUrl + ConfigsApp.delUrl
-          : ConfigsApp.baseUrl + ConfigsApp.employeesUrl + ConfigsApp.delUrl,
+          ? ConfigsApp.baseUrl + ConfigsApp.calendarUrl + ConfigsApp.delUrl
+          : ConfigsApp.baseUrl + ConfigsApp.calendarUrl + ConfigsApp.delUrl,
       body: finalBody,
       headers: {'Content-Type': 'application/json'},
     );

@@ -1,20 +1,20 @@
 import 'dart:convert';
 
 import 'package:chamcongapp/configs/config.dart';
-import 'package:chamcongapp/data/model/employeesModel.dart';
+import 'package:chamcongapp/data/model/calendarModel.dart';
 import 'package:http/http.dart';
 
-Future<dynamic> getEmployees() async {
+Future<dynamic> getCalendar() async {
   try {
     Response response = await get(
         ConfigsApp.isDebugMode
-            ? ConfigsApp.baseUrl + ConfigsApp.employeesUrl
-            : ConfigsApp.baseUrl + ConfigsApp.employeesUrl,
+            ? ConfigsApp.baseUrl + ConfigsApp.calendarUrl
+            : ConfigsApp.baseUrl + ConfigsApp.calendarUrl,
         headers: {'Content-Type': 'application/json'});
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       if (data['message'] == 'success') {
-        return EmployeesModel.fromJson(data);
+        return CalendarModel.fromJson(data);
       } else {
         return null;
       }

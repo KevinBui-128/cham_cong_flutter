@@ -5,7 +5,13 @@ import 'package:http/http.dart';
 
 Future<int> postLogin({String username, String password}) async {
   try {
-    Map<String, String> body = {"name":"null","username": username, "password": password};
+    Map<String, dynamic> body = {
+      "name": "null",
+      "username": username,
+      "password": password,
+      "phone": 123,
+      "address": "null"
+    };
     var finalBody = json.encode(body);
     Response response = await post(
         ConfigsApp.isDebugMode
@@ -19,6 +25,8 @@ Future<int> postLogin({String username, String password}) async {
         return 1;
       } else if (data['message'] == "Wrong username") {
         return 2;
+      } else if (data['message'] == "Wrong password") {
+        return 3;
       } else {
         return 0;
       }
